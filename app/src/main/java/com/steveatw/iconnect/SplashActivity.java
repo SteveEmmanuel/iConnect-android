@@ -23,7 +23,6 @@ public class SplashActivity extends AppCompatActivity {
 
     private SharedPreferences prefs = null;
     private Intent intent;
-    private String uuid;
     private String url = "http://192.168.0.174:8080/checkapproval";
     private Context mContext;
     private String firebase_token;
@@ -68,31 +67,24 @@ public class SplashActivity extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 // Do something with response
                                 // Process the JSON
-                                try{
-                                    // Get the JSON array
-                                    if(response.has("error")){
-                                        //not approvede
-                                        intent = new Intent(SplashActivity.this, PendingApprovalActivity.class);
-                                    }
-                                    else{
-                                        uuid = response.getString("uuid");
 
-                                        prefs = getSharedPreferences("com.steveatw.iconnect", MODE_PRIVATE);
-                                        prefs.edit().putString("uuid", uuid).apply();
-
-                                        intent = new Intent(SplashActivity.this, QRCodeDisplayActivity.class);
-                                        intent.putExtra("uuid", uuid);
-                                    }
-                                    new Handler().postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            startActivity(intent);
-                                            finish();
-                                        }
-                                    },1000);
-                                }catch (JSONException e){
-                                    e.printStackTrace();
+                                // Get the JSON array
+                                if(response.has("error")){
+                                    //not approvede
+                                    intent = new Intent(SplashActivity.this, PendingApprovalActivity.class);
                                 }
+                                else{
+
+                                    intent = new Intent(SplashActivity.this, QRCodeDisplayActivity.class);
+                                    intent.putExtra("firebase_token", firebase_token);
+                                }
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                },1000);
                             }
                         },
                         new Response.ErrorListener(){

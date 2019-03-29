@@ -35,7 +35,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private String url = "http://192.168.0.174:8080/customer";
     private EditText name, phone_number, email;
     private Button finishBooking;
-    private String uuid;
     private  String firebase_token;
     SharedPreferences prefs = null;
     @Override

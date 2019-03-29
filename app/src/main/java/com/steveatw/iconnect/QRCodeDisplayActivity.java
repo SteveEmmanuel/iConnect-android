@@ -31,7 +31,7 @@ public class QRCodeDisplayActivity extends AppCompatActivity {
         qrImage = (ImageView) findViewById(R.id.QR_Image);
 
         Intent intent = getIntent();
-        inputValue = intent.getStringExtra("uuid");
+        inputValue = intent.getStringExtra("firebase_token");
 
         WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
