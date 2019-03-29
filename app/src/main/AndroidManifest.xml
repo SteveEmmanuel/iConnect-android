@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".PendingApprovalActivity"
+            android:label="@string/title_activity_pending_approval"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".QRCodeDisplayActivity" />
         <activity
             android:name=".RegistrationActivity"
@@ -29,6 +33,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+
         <service
             android:name=".CustomFirebaseMessagingService"
             android:exported="false">

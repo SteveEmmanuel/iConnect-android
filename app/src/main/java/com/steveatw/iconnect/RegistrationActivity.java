@@ -35,7 +35,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private String url = "http://192.168.0.174:8080/customer";
     private EditText name, phone_number, email;
     private Button finishBooking;
-    String uuid;
+    private String uuid;
+    private  String firebase_token;
     SharedPreferences prefs = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,84 +53,70 @@ public class RegistrationActivity extends AppCompatActivity {
         finishBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-
-                try {
-                    JSONObject customer_detail_json = new JSONObject();
-                    customer_detail_json.put("name", name.getText().toString());
-                    customer_detail_json.put("phone_number", phone_number.getText().toString());
-                    customer_detail_json.put("email", email.getText().toString());
-
-
-                    // Initialize a new RequestQueue instance
-                    RequestQueue requestQueue = Volley.newRequestQueue(mContext);
-
-                    // Initialize a new JsonObjectRequest instance
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                            Request.Method.POST,
-                            url,
-                            customer_detail_json,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    // Do something with response
-                                    // Process the JSON
-                                    try{
-                                        // Get the JSON array
-                                        uuid = response.getString("uuid");
-
-                                        prefs = getSharedPreferences("com.steveatw.iconnect", MODE_PRIVATE);
-                                        prefs.edit().putString("uuid", uuid).apply();
-
-                                        FirebaseInstanceId.getInstance().getInstanceId()
-                                                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                                        if (!task.isSuccessful()) {
-                                                            Log.w("token", "getInstanceId failed", task.getException());
-                                                            return;
-                                                        }
-
-                                                        // Get new Instance ID token
-                                                        String token = task.getResult().getToken();
-
-                                                        // Log and toast
-                                                        String msg = "token generated"+ token;
-                                                        Log.d("token", msg);
-                                                        Toast.makeText(RegistrationActivity.this, msg, Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-
-
-                                        Intent intent = new Intent(RegistrationActivity.this, QRCodeDisplayActivity.class);
-                                        intent.putExtra("uuid", uuid);
-
-                                        startActivity(intent);
-                                        finish();
-                                    }catch (JSONException e){
-                                        e.printStackTrace();
-                                    }
+                FirebaseInstanceId.getInstance().getInstanceId()
+                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                if (!task.isSuccessful()) {
+                                    Log.w("token", "getInstanceId failed", task.getException());
+                                    return;
                                 }
-                            },
-                            new Response.ErrorListener(){
-                                @Override
-                                public void onErrorResponse(VolleyError error){
-                                    // Do something when error occurred
-                                    Snackbar.make(
-                                            view,
-                                            "Error.",
-                                            Snackbar.LENGTH_LONG
-                                    ).show();
+
+                                // Get new Instance ID token
+                                firebase_token = task.getResult().getToken();
+                                prefs = getSharedPreferences("com.steveatw.iconnect", MODE_PRIVATE);
+                                prefs.edit().putString("firebase_token", firebase_token).apply();
+                                // Log and toast
+                                String msg = "token generated" + firebase_token;
+                                Log.d("token", msg);
+                                Toast.makeText(RegistrationActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                try {
+                                    JSONObject customer_detail_json = new JSONObject();
+                                    customer_detail_json.put("name", name.getText().toString());
+                                    customer_detail_json.put("phone_number", phone_number.getText().toString());
+                                    customer_detail_json.put("email", email.getText().toString());
+                                    customer_detail_json.put("firebase_token", firebase_token);
+
+                                    // Initialize a new RequestQueue instance
+                                    RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+
+                                    // Initialize a new JsonObjectRequest instance
+                                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                                            Request.Method.POST,
+                                            url,
+                                            customer_detail_json,
+                                            new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+                                                    // Do something with response
+                                                    // Process the JSON
+                                                    Intent intent = new Intent(RegistrationActivity.this, PendingApprovalActivity.class);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+                                            },
+                                            new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    // Do something when error occurred
+                                                    Snackbar.make(
+                                                            view,
+                                                            "Error.",
+                                                            Snackbar.LENGTH_LONG
+                                                    ).show();
+                                                }
+                                            }
+                                    );
+
+                                    // Add JsonObjectRequest to the RequestQueue
+                                    requestQueue.add(jsonObjectRequest);
+
+                                    Log.d("output", customer_detail_json.toString(2));
+                                }catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
                             }
-                    );
-
-                    // Add JsonObjectRequest to the RequestQueue
-                    requestQueue.add(jsonObjectRequest);
-
-                    Log.d("output", customer_detail_json.toString(2));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                        });
             }
         });
     }
