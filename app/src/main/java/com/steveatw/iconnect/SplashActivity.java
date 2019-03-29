@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.firebase.FirebaseApp;
+
 public class SplashActivity extends AppCompatActivity {
 
     SharedPreferences prefs = null;
@@ -17,11 +19,12 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
 
         prefs = getSharedPreferences("com.steveatw.iconnect", MODE_PRIVATE);
         if (prefs.getBoolean("firstrun", true)) {
             // First run
-            prefs.edit().putBoolean("firstrun", false).commit();
+            prefs.edit().putBoolean("firstrun", false).apply();
 
             intent = new Intent(SplashActivity.this, MainActivity.class);
         }

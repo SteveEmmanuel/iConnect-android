@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "368272814899",
+    "firebase_url": "https://iconnect-2d03c.firebaseio.com",
+    "project_id": "iconnect-2d03c",
+    "storage_bucket": "iconnect-2d03c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368272814899:android:8b4558a9b47ed450",
+        "android_client_info": {
+          "package_name": "com.steveatw.iconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "368272814899-0d9ki73qv32bme9vo16dca9vbhg5jl70.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.steveatw.iconnect",
+            "certificate_hash": "b56294f5216bdd92bf0942236ed250ad974cd4ab"
+          }
+        },
+        {
+          "client_id": "368272814899-213gujmp8d4jmkp96n3hke2smntu4i0e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB98uMfiixinX-SNxKwMSXuXgsupEu-fhg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "368272814899-213gujmp8d4jmkp96n3hke2smntu4i0e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
