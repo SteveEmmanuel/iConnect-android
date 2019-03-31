@@ -24,7 +24,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private SharedPreferences prefs = null;
     private Intent intent;
-    private String url = "http://192.168.0.174:8080/checkapproval";
+    private String url = "http://steveisredatw.pythonanywhere.com/checkapproval";
     private Context mContext;
     private String firebase_token;
     @Override
@@ -34,11 +34,8 @@ public class SplashActivity extends AppCompatActivity {
         mContext = getApplicationContext();
 
         prefs = getSharedPreferences("com.steveatw.iconnect", MODE_PRIVATE);
-        if (prefs.getBoolean("firstrun", true)) {
-            // First run
-            prefs.edit().putBoolean("firstrun", false).apply();
-
-            intent = new Intent(SplashActivity.this, MainActivity.class);
+        if (!prefs.contains("firebase_token")) {
+            intent = new Intent(SplashActivity.this, RegistrationActivity.class);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -47,11 +44,11 @@ public class SplashActivity extends AppCompatActivity {
                 }
             },1000);
         }
-        else{
+        else {
             // Not first run
             // Check if approved
             try{
-                prefs = getSharedPreferences("com.steveatw.iconnect", MODE_PRIVATE);
+
                 firebase_token = prefs.getString("firebase_token", null);
                 JSONObject customer_detail_json = new JSONObject();
                 customer_detail_json.put("firebase_token", firebase_token);
@@ -75,7 +72,6 @@ public class SplashActivity extends AppCompatActivity {
                                     intent = new Intent(SplashActivity.this, PendingApprovalActivity.class);
                                 }
                                 else{
-
                                     intent = new Intent(SplashActivity.this, QRCodeDisplayActivity.class);
                                     intent.putExtra("firebase_token", firebase_token);
                                 }
@@ -106,7 +102,6 @@ public class SplashActivity extends AppCompatActivity {
             }catch (JSONException e) {
                 e.printStackTrace();
             }
-
 
         }
     }
