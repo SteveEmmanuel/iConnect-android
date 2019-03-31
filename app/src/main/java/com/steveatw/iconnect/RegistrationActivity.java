@@ -1,5 +1,6 @@
 package com.steveatw.iconnect;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -107,6 +109,15 @@ public class RegistrationActivity extends AppCompatActivity {
                                         // Initialize a new RequestQueue instance
                                         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
 
+                                        final ProgressDialog progressDialog = new ProgressDialog(RegistrationActivity.this,
+                                                R.style.AppTheme_Dark_Dialog);
+                                        progressDialog.setIndeterminate(true);
+                                        progressDialog.setMessage("Loading...");
+                                        progressDialog.setContentView(R.layout.progress_bar);
+                                        progressDialog.getWindow().setGravity(Gravity.CENTER);
+                                        progressDialog.show();
+
+
                                         // Initialize a new JsonObjectRequest instance
                                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                                                 Request.Method.POST,
@@ -117,6 +128,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                                     public void onResponse(JSONObject response) {
                                                         // Do something with response
                                                         // Process the JSON
+                                                        progressDialog.dismiss();
                                                         Intent intent = new Intent(RegistrationActivity.this, PendingApprovalActivity.class);
                                                         startActivity(intent);
                                                         finish();
