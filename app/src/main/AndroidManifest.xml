@@ -16,12 +16,12 @@
         <activity
             android:name=".PendingApprovalActivity"
             android:label="@string/title_activity_pending_approval"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.Dark"></activity>
         <activity android:name=".QRCodeDisplayActivity" />
         <activity
             android:name=".RegistrationActivity"
             android:label="@string/title_activity_registration"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
