@@ -53,4 +53,15 @@ public class QRCodeDisplayActivity extends AppCompatActivity {
             Log.v(TAG, e.toString());
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }

@@ -15,4 +15,14 @@ public class PendingApprovalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pending_approval);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
